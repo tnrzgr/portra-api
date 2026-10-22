@@ -1035,7 +1035,7 @@ OTHER_LIST = {
         {"code": "GWW", "name": "W.W. Grainger"},
         {"code": "WAB", "name": "Wabtec"},
         {"code": "WBA", "name": "Walgreens Boots Alliance"},
-           ],
+        ],
        "Kripto": [
         {"code": "BTC", "name": "Bitcoin"},
         {"code": "ETH", "name": "Ethereum"},
