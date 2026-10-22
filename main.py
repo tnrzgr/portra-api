@@ -858,5 +858,28 @@ def get_fiyat(market: str, symbol: str):
 def get_fonlar():
     return OTHER_LIST["Fon"]
 
+# ==========================================
+# YENİ: GEÇMİŞ FİYAT VERİSİ ENDPOINT'İ
+# ==========================================
+@app.get("/gecmis/{market}/{symbol}")
+def get_gecmis(market: str, symbol: str, interval: str = "1day", outputsize: int = 30):
+    try:
+        td_symbol = symbol
+        if market == "Kripto" or market == "Emtia":
+            td_symbol = f"{symbol}/USD"
+        
+        url = f"https://api.twelvedata.com/time_series?symbol={td_symbol}&interval={interval}&outputsize={outputsize}&apikey={TWELVE_DATA_API_KEY}"
+        res = requests.get(url)
+        data = res.json()
+        
+        if "values" in data:
+            gecmis = [{"date": v["datetime"], "price": float(v["close"])} for v in reversed(data["values"])]
+            return gecmis
+        
+        return []
+    except Exception as e:
+        print(f"Geçmiş veri hatası: {e}")
+        return []
+
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
