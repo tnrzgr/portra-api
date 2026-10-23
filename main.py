@@ -860,25 +860,21 @@ def get_fonlar():
 
 BURKUT_API_KEY = "bk_live_7D0svCyUBRnUglDI_7T8h4A_ijMCbOxxh1Ge6woapUQRujP3LAtDX4HdWMLc7"
 
-BURKUT_API_KEY = "bk_live_7D0svCyUBRnUglDI_7T8h4A_ijMCbOxxh1Ge6woapUQRujP3LAtDX4HdWMLc7"
-
 @app.get("/bist-haber/{symbol}")
 def get_bist_haber(symbol: str):
     try:
-        # Bürküt API'sinin doğru KAP bildirimleri endpoint'i (tahmini)
-        # MCP sunucusunun temel URL'si api.burkutportfoy.com olduğu için, 
-        # yaygın bir REST yapısı olan /api/v1 yolunu deniyoruz.
-        url = f"https://api.burkutportfoy.com/api/v1/kap/announcements?symbol={symbol}"
+        # Bürküt SDK'sının belirttiği doğru temel URL'yi kullanıyoruz [citation:2]
+        # KAP bildirimleri için yaygın bir yol olan 'announcements'ı deniyoruz.
+        url = f"https://api.burkutportfoy.com/api/public/v1/announcements?symbol={symbol}"
         headers = {"Authorization": f"Bearer {BURKUT_API_KEY}"}
         res = requests.get(url, headers=headers, timeout=10)
         
         # Yanıtı logla (Render loglarında göreceğiz)
-        print(f"Bürküt API yanıtı: {res.status_code} - {res.text[:200]}")
+        print(f"Bürküt API yanıtı: {res.status_code} - {res.text[:300]}")
         
         if res.status_code == 200:
             data = res.json()
             haberler = []
-            # Bürküt'ün veri yapısını bilmediğimiz için genel bir dönüşüm yapıyoruz
             if isinstance(data, list):
                 for item in data:
                     haberler.append({
