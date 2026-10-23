@@ -4373,10 +4373,38 @@ def get_price(market: str, symbol: str):
     return {"symbol": s, "price": mock_defaults.get(s, 100.0)}
 
 @app.get("/gecmis/{market}/{symbol}")
-def get_history(market: str, symbol: str):
+def get_history(market: str, symbol: str, range: str = "1mo"):
     m = market.upper().strip()
     s = symbol.upper().strip()
-    key = f"{m}:{s}"
+    rng = range.lower().strip()
+    
+    # Range & interval mapping
+    interval = "1d"
+    yahoo_range = "1mo"
+    days_count = 30
+
+    if rng in ["7d", "1w", "1h", "7"]:
+        yahoo_range = "7d"
+        interval = "1d"
+        days_count = 7
+    elif rng in ["1mo", "1m", "1a", "30"]:
+        yahoo_range = "1mo"
+        interval = "1d"
+        days_count = 30
+    elif rng in ["3mo", "3m", "3a", "90"]:
+        yahoo_range = "3mo"
+        interval = "1d"
+        days_count = 90
+    elif rng in ["1y", "12m", "365"]:
+        yahoo_range = "1y"
+        interval = "1wk"
+        days_count = 365
+    elif rng in ["all", "tumu", "max", "5y"]:
+        yahoo_range = "5y"
+        interval = "1mo"
+        days_count = 365 * 5
+
+    key = f"{m}:{s}:{yahoo_range}"
     now = time.time()
     if key in HISTORY_CACHE and now - HISTORY_CACHE[key][0] < HISTORY_TTL:
         return HISTORY_CACHE[key][1]
@@ -4388,7 +4416,7 @@ def get_history(market: str, symbol: str):
     else: target = s
 
     try:
-        url = f"https://query1.finance.yahoo.com/v8/finance/chart/{target}?range=1mo&interval=1d"
+        url = f"https://query1.finance.yahoo.com/v8/finance/chart/{target}?range={yahoo_range}&interval={interval}"
         r = requests.get(url, headers=NEWS_HEADERS, timeout=6)
         if r.status_code == 200:
             result = r.json()["chart"]["result"][0]
@@ -4405,11 +4433,13 @@ def get_history(market: str, symbol: str):
     except Exception as e:
         print("Geçmiş veri hatası:", e)
 
-    base_p = PRICE_CACHE.get(key, (0, 100.0))[1]
+    base_p = PRICE_CACHE.get(f"{m}:{s}", (0, 100.0))[1]
     mock_hist = []
-    for i in range(29, -1, -1):
+    step_days = max(1, days_count // 30)
+    for i in range(days_count, -1, -step_days):
         dt = (datetime.now() - timedelta(days=i)).strftime("%Y-%m-%d")
-        mock_hist.append({"date": dt, "price": round(base_p * (0.95 + (i % 7) * 0.015), 2)})
+        variation = 1 + (((i * 7) % 19) - 9) * 0.012
+        mock_hist.append({"date": dt, "price": round(base_p * variation, 2)})
     return mock_hist
 
 # ==========================================
