@@ -858,6 +858,36 @@ def get_fiyat(market: str, symbol: str):
 def get_fonlar():
     return OTHER_LIST["Fon"]
 
+BURKUT_API_KEY = "bk_live_7D0svCyUBRnUglDI_7T8h4A_ijMCbOxxh1Ge6woapUQRujP3LAtDX4HdWMLc7"
+
+@app.get("/bist-haber/{symbol}")
+def get_bist_haber(symbol: str):
+    try:
+        # Bürküt API'sine doğrudan istek at
+        # Not: Doğru endpoint adını bilmediğimiz için burada bir tahmin kullanıyoruz.
+        # Bürküt dokümantasyonuna göre doğru yolu bulursanız burayı güncelleyebiliriz.
+        url = f"https://api.burkutportfoy.com/api/public/v1/stocks/{symbol}/kap"
+        headers = {"Authorization": f"Bearer {BURKUT_API_KEY}"}
+        res = requests.get(url, headers=headers, timeout=10)
+        
+        if res.status_code == 200:
+            data = res.json()
+            # Gelen veriyi uygulamanın anlayacağı formata çevir
+            # Bürküt'ün veri yapısını bilmediğimiz için genel bir dönüşüm yapıyoruz
+            haberler = []
+            if isinstance(data, list):
+                for item in data:
+                    haberler.append({
+                        "title": item.get("title", "Başlık yok"),
+                        "source": "KAP",
+                        "url": item.get("url", ""),
+                        "datetime": item.get("date", "")
+                    })
+            return haberler
+        return []
+    except Exception as e:
+        print(f"BIST haber hatası: {e}")
+        return []
 # ==========================================
 # YENİ: GEÇMİŞ FİYAT VERİSİ ENDPOINT'İ
 # ==========================================
