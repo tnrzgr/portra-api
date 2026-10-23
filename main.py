@@ -863,14 +863,12 @@ BURKUT_API_KEY = "bk_live_7D0svCyUBRnUglDI_7T8h4A_ijMCbOxxh1Ge6woapUQRujP3LAtDX4
 @app.get("/bist-haber/{symbol}")
 def get_bist_haber(symbol: str):
     try:
-        # Bürküt SDK'sının belirttiği doğru temel URL [citation:2]
         url = f"https://api.burkutportfoy.com/api/public/v1/announcements?symbol={symbol}"
         
-        # Bearer ön eki OLMADAN doğrudan anahtarı gönderiyoruz (SDK'nın yaptığı gibi)
-        headers = {"Authorization": BURKUT_API_KEY}
+        # X-API-Key başlığını dene
+        headers = {"X-API-Key": BURKUT_API_KEY}
         res = requests.get(url, headers=headers, timeout=10)
         
-        # Yanıtı logla (Render loglarında göreceğiz)
         print(f"Bürküt API yanıtı: {res.status_code} - {res.text[:300]}")
         
         if res.status_code == 200:
