@@ -2304,6 +2304,8 @@ BIST_LIST = [
 
 
 OTHER_LIST = {
+    "ETF": POPULAR_ETFLER,
+    "Fon": POPULAR_FONLAR,
     "ABD": [
     {
         "code": "MMM",
@@ -4023,6 +4025,56 @@ OTHER_LIST = {
 }
 
 
+
+POPULAR_ETFLER = [
+  {"code": "SPY", "name": "SPDR S&P 500 ETF Trust"},
+  {"code": "QQQ", "name": "Invesco QQQ Trust (Nasdaq 100)"},
+  {"code": "VOO", "name": "Vanguard S&P 500 ETF"},
+  {"code": "VTI", "name": "Vanguard Total Stock Market ETF"},
+  {"code": "IVV", "name": "iShares Core S&P 500 ETF"},
+  {"code": "DIA", "name": "SPDR Dow Jones Industrial Average ETF"},
+  {"code": "IWM", "name": "iShares Russell 2000 ETF"},
+  {"code": "SMH", "name": "VanEck Semiconductor ETF"},
+  {"code": "SOXX", "name": "iShares Semiconductor ETF"},
+  {"code": "ARKK", "name": "ARK Innovation ETF"},
+  {"code": "SCHD", "name": "Schwab U.S. Dividend Equity ETF"},
+  {"code": "VYM", "name": "Vanguard High Dividend Yield ETF"},
+  {"code": "XLK", "name": "Technology Select Sector SPDR Fund"},
+  {"code": "XLF", "name": "Financial Select Sector SPDR Fund"},
+  {"code": "XLE", "name": "Energy Select Sector SPDR Fund"},
+  {"code": "XLV", "name": "Health Care Select Sector SPDR Fund"},
+  {"code": "XLI", "name": "Industrial Select Sector SPDR Fund"},
+  {"code": "XLY", "name": "Consumer Discretionary Select SPDR"},
+  {"code": "XLP", "name": "Consumer Staples Select SPDR"},
+  {"code": "XLU", "name": "Utilities Select Sector SPDR Fund"},
+  {"code": "XLB", "name": "Materials Select Sector SPDR Fund"},
+  {"code": "VNQ", "name": "Vanguard Real Estate ETF"},
+  {"code": "GLD", "name": "SPDR Gold Shares ETF"},
+  {"code": "IAU", "name": "iShares Gold Trust ETF"},
+  {"code": "SLV", "name": "iShares Silver Trust ETF"},
+  {"code": "TLT", "name": "iShares 20+ Year Treasury Bond ETF"},
+  {"code": "BND", "name": "Vanguard Total Bond Market ETF"},
+  {"code": "AGG", "name": "iShares Core U.S. Aggregate Bond ETF"},
+  {"code": "JEPI", "name": "JPMorgan Equity Premium Income ETF"},
+  {"code": "JEPQ", "name": "JPMorgan Nasdaq Equity Premium Income ETF"},
+  {"code": "TQQQ", "name": "ProShares UltraPro QQQ (3x)"},
+  {"code": "SQQQ", "name": "ProShares UltraPro Short QQQ (-3x)"},
+  {"code": "SOXL", "name": "Direxion Daily Semiconductor Bull 3X"},
+  {"code": "VGT", "name": "Vanguard Information Technology ETF"},
+  {"code": "VWO", "name": "Vanguard FTSE Emerging Markets ETF"},
+  {"code": "VEA", "name": "Vanguard FTSE Developed Markets ETF"},
+  {"code": "VT", "name": "Vanguard Total World Stock ETF"},
+  {"code": "VXUS", "name": "Vanguard Total International Stock ETF"},
+  {"code": "IBIT", "name": "iShares Bitcoin Trust ETF"},
+  {"code": "FBTC", "name": "Fidelity Wise Origin Bitcoin Fund"},
+  {"code": "ETHA", "name": "iShares Ethereum Trust ETF"},
+  {"code": "URA", "name": "Global X Uranium ETF"},
+  {"code": "LIT", "name": "Global X Lithium & Battery Tech ETF"},
+  {"code": "TAN", "name": "Invesco Solar ETF"},
+  {"code": "ICLN", "name": "iShares Global Clean Energy ETF"},
+  {"code": "XBI", "name": "SPDR S&P Biotech ETF"}
+]
+
 POPULAR_FONLAR = [
   {
     "code": "TI3",
@@ -4197,6 +4249,10 @@ def get_varliklar(market: str):
         return OTHER_LIST.get("Döviz", [])
     if m in ["ABD", "US", "STOCK"]:
         return OTHER_LIST.get("ABD", [])
+    if m in ["ETF", "US ETF", "ABD ETF"]:
+        return OTHER_LIST.get("ETF", POPULAR_ETFLER)
+    if m in ["FON", "TEFAS", "TR FON"]:
+        return get_fonlar()
     for k in OTHER_LIST:
         if k.upper() == m:
             return OTHER_LIST[k]
@@ -4266,8 +4322,12 @@ def get_price(market: str, symbol: str):
 
     price = None
 
+    # Türkiye Yatırım Fonları (TEFAS)
+    if m in ["FON", "TEFAS", "TR FON"]:
+        return get_fon_price(s)
+
     # Kripto (Binance API)
-    if m in ["KRIPTO", "CRYPTO"]:
+    elif m in ["KRIPTO", "CRYPTO"]:
         try:
             clean_sym = s.replace("USDT", "").replace("USD", "")
             r = requests.get(f"https://api.binance.com/api/v3/ticker/price?symbol={clean_sym}USDT", timeout=4)
@@ -4326,7 +4386,7 @@ def get_price(market: str, symbol: str):
                 pass
 
     # ABD Hisseleri
-    elif m in ["ABD", "US", "STOCK"]:
+    elif m in ["ABD", "US", "STOCK", "ETF", "US ETF", "ABD ETF"]:
         try:
             r = requests.get(
                 f"https://query1.finance.yahoo.com/v8/finance/chart/{s}?interval=1d&range=1d",
