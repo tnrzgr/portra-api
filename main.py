@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import requests
 import uvicorn
-from borsapy import Stock
+import borsapy as bp
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
@@ -882,9 +882,11 @@ def get_gecmis(market: str, symbol: str, interval: str = "1day", outputsize: int
 @app.get("/bist-haber/{symbol}")
 def get_bist_haber(symbol: str):
     try:
-        hisse = Stock(symbol.upper())
+        # Ticker sınıfını kullanıyoruz
+        hisse = bp.Ticker(symbol.upper())
         haberler = []
-        # borsapy'nin .news özelliği son KAP bildirimlerini döndürür
+        
+        # .news özelliği son KAP bildirimlerini döndürür
         for item in hisse.news:
             haberler.append({
                 "title": item.get("title", "Başlık yok"),
