@@ -1,5 +1,9 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+import hashlib
+import json
+import os
 import requests
 import time
 import xml.etree.ElementTree as ET
@@ -26,6 +30,107 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# ==========================================
+# KULLANICI KİMLİK DOĞRULAMA (AUTH) SİSTEMİ
+# ==========================================
+
+USERS_FILE = os.path.join(os.path.dirname(__file__), "users.json")
+USERS_CACHE = {}
+
+def load_users():
+    global USERS_CACHE
+    if USERS_CACHE:
+        return USERS_CACHE
+    if os.path.exists(USERS_FILE):
+        try:
+            with open(USERS_FILE, "r", encoding="utf-8") as f:
+                USERS_CACHE = json.load(f)
+                return USERS_CACHE
+        except Exception:
+            pass
+    return USERS_CACHE
+
+def save_users(users):
+    global USERS_CACHE
+    USERS_CACHE = users
+    try:
+        with open(USERS_FILE, "w", encoding="utf-8") as f:
+            json.dump(users, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        # Fallback to in-memory store
+        pass
+
+class RegisterRequest(BaseModel):
+    name: str
+    email: str
+    password: str
+
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
+def hash_pw(pw: str) -> str:
+    return hashlib.sha256(f"portra_{pw}_salt".encode("utf-8")).hexdigest()
+
+@app.post("/auth/register")
+def register_user(req: RegisterRequest):
+    users = load_users()
+    email_clean = req.email.strip().lower()
+    if email_clean in users:
+        raise HTTPException(status_code=400, detail="Bu e-posta adresiyle kayıtlı bir hesap zaten var.")
+    
+    user_data = {
+        "id": f"u_{int(time.time()*1000)}",
+        "name": req.name.strip(),
+        "email": email_clean,
+        "password_hash": hash_pw(req.password),
+        "created_at": int(time.time())
+    }
+    users[email_clean] = user_data
+    save_users(users)
+    return {
+        "success": True,
+        "user": {
+            "id": user_data["id"],
+            "name": user_data["name"],
+            "email": user_data["email"],
+            "isGuest": False,
+            "joinedAt": user_data["created_at"]
+        }
+    }
+
+@app.post("/auth/login")
+def login_user(req: LoginRequest):
+    users = load_users()
+    email_clean = req.email.strip().lower()
+    user_data = users.get(email_clean)
+    if not user_data or user_data.get("password_hash") != hash_pw(req.password):
+        # Default demo hesabı desteği
+        if email_clean == "demo@portra.app" and req.password == "123456":
+            return {
+                "success": True,
+                "user": {
+                    "id": "demo_user",
+                    "name": "Taner Özgür",
+                    "email": "demo@portra.app",
+                    "isGuest": False,
+                    "joinedAt": int(time.time())
+                }
+            }
+        raise HTTPException(status_code=401, detail="E-posta veya şifre hatalı.")
+    
+    return {
+        "success": True,
+        "user": {
+            "id": user_data["id"],
+            "name": user_data["name"],
+            "email": user_data["email"],
+            "isGuest": False,
+            "joinedAt": user_data.get("created_at", int(time.time()))
+        }
+    }
+
 
 COLLECT_API_KEY = "52PbVd3MhiUznRS0L73H4g:6rploIh2fILNVYF4LkIMQK"
 TWELVE_DATA_API_KEY = "a5aacbec3f444817a0fed146c92eb641"
