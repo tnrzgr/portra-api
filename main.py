@@ -858,38 +858,6 @@ def get_fiyat(market: str, symbol: str):
 def get_fonlar():
     return OTHER_LIST["Fon"]
 
-BURKUT_API_KEY = "bk_live_7D0svCyUBRnUglDI_7T8h4A_ijMCbOxxh1Ge6woapUQRujP3LAtDX4HdWMLc7"
-
-@app.get("/bist-haber/{symbol}")
-def get_bist_haber(symbol: str):
-    try:
-        url = f"https://api.burkutportfoy.com/api/public/v1/announcements?symbol={symbol}"
-        
-        # X-API-Key başlığını dene
-        headers = {"X-API-Key": BURKUT_API_KEY}
-        res = requests.get(url, headers=headers, timeout=10)
-        
-        print(f"Bürküt API yanıtı: {res.status_code} - {res.text[:300]}")
-        
-        if res.status_code == 200:
-            data = res.json()
-            haberler = []
-            if isinstance(data, list):
-                for item in data:
-                    haberler.append({
-                        "title": item.get("title", item.get("subject", "Başlık yok")),
-                        "source": "KAP",
-                        "url": item.get("url", ""),
-                        "datetime": item.get("date", item.get("published_at", ""))
-                    })
-            return haberler
-        return []
-    except Exception as e:
-        print(f"BIST haber hatası: {e}")
-        return []
-# ==========================================
-# YENİ: GEÇMİŞ FİYAT VERİSİ ENDPOINT'İ
-# ==========================================
 @app.get("/gecmis/{market}/{symbol}")
 def get_gecmis(market: str, symbol: str, interval: str = "1day", outputsize: int = 30):
     try:
@@ -909,6 +877,11 @@ def get_gecmis(market: str, symbol: str, interval: str = "1day", outputsize: int
     except Exception as e:
         print(f"Geçmiş veri hatası: {e}")
         return []
+
+# BIST haberleri için boş dönen endpoint
+@app.get("/bist-haber/{symbol}")
+def get_bist_haber(symbol: str):
+    return []
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
