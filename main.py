@@ -365,5 +365,45 @@ def get_news(market: str, symbol: str):
     NEWS_CACHE[key] = (time.time(), items)
     return items
 
+def build_dividend_query(market: str, symbol: str):
+    m = market.upper().strip()
+    s = symbol.upper().strip()
+    if m == "BIST":
+        return f"{s} temettü OR kar payı", "tr", "TR", "tr"
+    if m in ["ABD", "US"]:
+        return f"{s} dividend", "en-US", "US", "en"
+    if m == "FON":
+        return f"{s} fon getiri dağıtım", "tr", "TR", "tr"
+    return None
+
+@app.get("/haberler/temettu")
+def get_general_dividend_news():
+    key = "TEMETTU_GENEL"
+    cached = NEWS_CACHE.get(key)
+    if cached and time.time() - cached[0] < NEWS_TTL:
+        return cached[1]
+
+    url = f"https://news.google.com/rss/search?q={quote('Borsa temettü dağıtımı OR temettü kararı OR temettü takvimi')}&hl=tr&gl=TR&ceid=TR:tr"
+    items = fetch_rss_items(url, limit=12)
+    NEWS_CACHE[key] = (time.time(), items)
+    return items
+
+@app.get("/haber/temettu/{market}/{symbol}")
+def get_dividend_news(market: str, symbol: str):
+    q = build_dividend_query(market, symbol)
+    if not q:
+        return []
+    query, hl, gl, lang = q
+
+    key = f"TEMETTU:{market}:{symbol}"
+    cached = NEWS_CACHE.get(key)
+    if cached and time.time() - cached[0] < NEWS_TTL:
+        return cached[1]
+
+    url = f"https://news.google.com/rss/search?q={quote(query)}&hl={hl}&gl={gl}&ceid={gl}:{lang}"
+    items = fetch_rss_items(url, limit=6)
+    NEWS_CACHE[key] = (time.time(), items)
+    return items
+
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
