@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import requests
 import uvicorn
-
+from borsapy import Stock
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
@@ -881,7 +881,21 @@ def get_gecmis(market: str, symbol: str, interval: str = "1day", outputsize: int
 # BIST haberleri için boş dönen endpoint
 @app.get("/bist-haber/{symbol}")
 def get_bist_haber(symbol: str):
-    return []
+    try:
+        hisse = Stock(symbol.upper())
+        haberler = []
+        # borsapy'nin .news özelliği son KAP bildirimlerini döndürür
+        for item in hisse.news:
+            haberler.append({
+                "title": item.get("title", "Başlık yok"),
+                "source": "KAP",
+                "url": item.get("url", ""),
+                "datetime": item.get("date", "")
+            })
+        return haberler
+    except Exception as e:
+        print(f"BIST haber hatası: {e}")
+        return []
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
