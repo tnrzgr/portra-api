@@ -3895,63 +3895,27 @@ OTHER_LIST = {
     }
 ],
     "Emtia": [
-    {
-        "code": "XAU",
-        "name": "Gram / Ons Altın (Gold)"
-    },
-    {
-        "code": "XAG",
-        "name": "Gümüş (Silver)"
-    },
-    {
-        "code": "BRENT",
-        "name": "Brent Petrol"
-    },
-    {
-        "code": "CRUDE",
-        "name": "Ham Petrol (WTI Crude Oil)"
-    },
-    {
-        "code": "NG",
-        "name": "Doğalgaz (Natural Gas)"
-    },
-    {
-        "code": "PLAT",
-        "name": "Platin (Platinum)"
-    },
-    {
-        "code": "PAL",
-        "name": "Paladyum (Palladium)"
-    },
-    {
-        "code": "COPPER",
-        "name": "Bakır (Copper)"
-    },
-    {
-        "code": "ALUM",
-        "name": "Alüminyum"
-    },
-    {
-        "code": "WHEAT",
-        "name": "Buğday (Wheat)"
-    },
-    {
-        "code": "CORN",
-        "name": "Mısır (Corn)"
-    },
-    {
-        "code": "COFFEE",
-        "name": "Kahve (Coffee)"
-    },
-    {
-        "code": "SUGAR",
-        "name": "Şeker (Sugar)"
-    },
-    {
-        "code": "COTTON",
-        "name": "Pamuk (Cotton)"
-    }
-],
+        {"code": "GRAM_ALTIN", "name": "Gram Altın (24 Ayar ₺)"},
+        {"code": "22_AYAR", "name": "22 Ayar Bilezik / Altın (Gram ₺)"},
+        {"code": "CEYREK", "name": "Çeyrek Altın (₺)"},
+        {"code": "YARIM", "name": "Yarım Altın (₺)"},
+        {"code": "TAM", "name": "Tam Altın (Ziynet ₺)"},
+        {"code": "CUMHURIYET", "name": "Cumhuriyet Altını (Ata ₺)"},
+        {"code": "ATA", "name": "Ata Altın (₺)"},
+        {"code": "RESAT", "name": "Reşat Altın (₺)"},
+        {"code": "GREMSE", "name": "Gremse Altın (2.5'luk ₺)"},
+        {"code": "14_AYAR", "name": "14 Ayar Altın (Gram ₺)"},
+        {"code": "18_AYAR", "name": "18 Ayar Altın (Gram ₺)"},
+        {"code": "GRAM_GUMUS", "name": "Gram Gümüş (₺)"},
+        {"code": "XAU", "name": "Ons Altın ($ / Ounce)"},
+        {"code": "XAG", "name": "Ons Gümüş ($ / Ounce)"},
+        {"code": "BRENT", "name": "Brent Petrol ($ / Varil)"},
+        {"code": "CRUDE", "name": "Ham Petrol (WTI $)"},
+        {"code": "PLAT", "name": "Platin ($ / Ons)"},
+        {"code": "PAL", "name": "Paladyum ($ / Ons)"},
+        {"code": "COPPER", "name": "Bakır (Copper $)"},
+        {"code": "NG", "name": "Doğalgaz (Natural Gas $)"}
+    ],
     "Döviz": [
     {
         "code": "USDTRY",
@@ -4412,24 +4376,81 @@ def get_price(market: str, symbol: str):
 
     # Emtia
     elif m in ["EMTIA", "COMMODITY"]:
-        emtia_target = "GC=F" if "XAU" in s else "SI=F" if "XAG" in s else "BZ=F" if "BRENT" in s else s
-        try:
-            r = requests.get(
-                f"https://query1.finance.yahoo.com/v8/finance/chart/{emtia_target}?interval=1d&range=1d",
-                headers=NEWS_HEADERS,
-                timeout=5
-            )
-            if r.status_code == 200:
-                meta = r.json()["chart"]["result"][0]["meta"]
-                price = float(meta.get("regularMarketPrice", 0))
-        except Exception:
-            pass
+        is_tr_gold = s in [
+            "GRAM_ALTIN", "ALTIN", "24_AYAR", "22_AYAR", "CEYREK",
+            "YARIM", "TAM", "CUMHURIYET", "ATA", "RESAT", "GREMSE",
+            "14_AYAR", "18_AYAR", "GRAM_GUMUS", "GUMUS"
+        ]
+        if is_tr_gold:
+            try:
+                ons_usd = 2735.0
+                usd_try = 34.50
+                r_gold = requests.get("https://query1.finance.yahoo.com/v8/finance/chart/GC=F?interval=1d&range=1d", headers=NEWS_HEADERS, timeout=4)
+                if r_gold.status_code == 200:
+                    ons_usd = float(r_gold.json()["chart"]["result"][0]["meta"].get("regularMarketPrice", ons_usd))
+                r_fx = requests.get("https://query1.finance.yahoo.com/v8/finance/chart/USDTRY=X?interval=1d&range=1d", headers=NEWS_HEADERS, timeout=4)
+                if r_fx.status_code == 200:
+                    usd_try = float(r_fx.json()["chart"]["result"][0]["meta"].get("regularMarketPrice", usd_try))
+                
+                gram_24k_tl = (ons_usd / 31.1034768) * usd_try
+                
+                if s in ["GRAM_ALTIN", "ALTIN", "24_AYAR"]:
+                    price = round(gram_24k_tl, 2)
+                elif s == "22_AYAR":
+                    price = round(gram_24k_tl * 0.916, 2)
+                elif s == "CEYREK":
+                    price = round(gram_24k_tl * 1.635, 2)
+                elif s == "YARIM":
+                    price = round(gram_24k_tl * 3.27, 2)
+                elif s == "TAM":
+                    price = round(gram_24k_tl * 6.54, 2)
+                elif s in ["CUMHURIYET", "ATA"]:
+                    price = round(gram_24k_tl * 6.75, 2)
+                elif s == "RESAT":
+                    price = round(gram_24k_tl * 6.78, 2)
+                elif s == "GREMSE":
+                    price = round(gram_24k_tl * 16.35, 2)
+                elif s == "14_AYAR":
+                    price = round(gram_24k_tl * 0.585, 2)
+                elif s == "18_AYAR":
+                    price = round(gram_24k_tl * 0.750, 2)
+                elif s in ["GRAM_GUMUS", "GUMUS"]:
+                    ons_silver = 33.50
+                    r_silv = requests.get("https://query1.finance.yahoo.com/v8/finance/chart/SI=F?interval=1d&range=1d", headers=NEWS_HEADERS, timeout=4)
+                    if r_silv.status_code == 200:
+                        ons_silver = float(r_silv.json()["chart"]["result"][0]["meta"].get("regularMarketPrice", ons_silver))
+                    price = round((ons_silver / 31.1034768) * usd_try, 2)
+            except Exception:
+                pass
+            
+            if not price:
+                tr_gold_defaults = {
+                    "GRAM_ALTIN": 3030.0, "ALTIN": 3030.0, "24_AYAR": 3030.0,
+                    "22_AYAR": 2775.0, "CEYREK": 4960.0, "YARIM": 9920.0,
+                    "TAM": 19840.0, "CUMHURIYET": 20480.0, "ATA": 20550.0,
+                    "RESAT": 20580.0, "GREMSE": 49600.0, "14_AYAR": 1775.0,
+                    "18_AYAR": 2275.0, "GRAM_GUMUS": 37.20, "GUMUS": 37.20
+                }
+                price = tr_gold_defaults.get(s, 3030.0)
+        else:
+            emtia_target = "GC=F" if "XAU" in s else "SI=F" if "XAG" in s else "BZ=F" if "BRENT" in s else "CL=F" if "CRUDE" in s else s
+            try:
+                r = requests.get(
+                    f"https://query1.finance.yahoo.com/v8/finance/chart/{emtia_target}?interval=1d&range=1d",
+                    headers=NEWS_HEADERS,
+                    timeout=5
+                )
+                if r.status_code == 200:
+                    meta = r.json()["chart"]["result"][0]["meta"]
+                    price = float(meta.get("regularMarketPrice", 0))
+            except Exception:
+                pass
 
     if price and price > 0:
         PRICE_CACHE[key] = (now, price)
         return {"symbol": s, "price": price}
 
-    mock_defaults = {"THYAO": 290.0, "GARAN": 145.0, "AAPL": 230.0, "BTC": 67000.0, "USDTRY": 34.50, "EURTRY": 37.20, "XAU": 3050.0}
+    mock_defaults = {"THYAO": 290.0, "GARAN": 145.0, "AAPL": 230.0, "BTC": 67000.0, "USDTRY": 34.50, "EURTRY": 37.20, "XAU": 2735.0, "XAG": 33.50, "BRENT": 74.50, "GRAM_ALTIN": 3030.0, "ALTIN": 3030.0, "24_AYAR": 3030.0, "22_AYAR": 2775.0, "CEYREK": 4960.0, "YARIM": 9920.0, "TAM": 19840.0, "CUMHURIYET": 20480.0, "ATA": 20550.0, "RESAT": 20580.0, "GREMSE": 49600.0, "14_AYAR": 1775.0, "18_AYAR": 2275.0, "GRAM_GUMUS": 37.20, "GUMUS": 37.20}
     return {"symbol": s, "price": mock_defaults.get(s, 100.0)}
 
 @app.get("/gecmis/{market}/{symbol}")
