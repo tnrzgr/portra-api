@@ -159,6 +159,16 @@ def receive_feedback(req: FeedbackRequest):
     except Exception as e:
         return {"status": "error", "message": str(e)}
 
+@app.get("/api/feedbacks")
+def get_feedbacks():
+    if os.path.exists(FEEDBACK_FILE):
+        try:
+            with open(FEEDBACK_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            return []
+    return []
+
 COLLECT_API_KEY = "52PbVd3MhiUznRS0L73H4g:6rploIh2fILNVYF4LkIMQK"
 TWELVE_DATA_API_KEY = "a5aacbec3f444817a0fed146c92eb641"
 
