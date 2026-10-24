@@ -132,6 +132,33 @@ def login_user(req: LoginRequest):
     }
 
 
+FEEDBACK_FILE = os.path.join(os.path.dirname(__file__), "feedbacks.json")
+
+class FeedbackRequest(BaseModel):
+    id: str = ""
+    date: str = ""
+    category: str = "suggestion"
+    email: str = ""
+    subject: str = ""
+    message: str
+
+@app.post("/api/feedback")
+def receive_feedback(req: FeedbackRequest):
+    try:
+        data = []
+        if os.path.exists(FEEDBACK_FILE):
+            try:
+                with open(FEEDBACK_FILE, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+            except Exception:
+                data = []
+        data.append(req.dict())
+        with open(FEEDBACK_FILE, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+        return {"status": "ok", "message": "Geri bildirim başarıyla kaydedildi"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
 COLLECT_API_KEY = "52PbVd3MhiUznRS0L73H4g:6rploIh2fILNVYF4LkIMQK"
 TWELVE_DATA_API_KEY = "a5aacbec3f444817a0fed146c92eb641"
 
