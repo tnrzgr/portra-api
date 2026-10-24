@@ -2303,6 +2303,208 @@ BIST_LIST = [
 ]
 
 
+
+POPULAR_ETFLER = [
+  {"code": "SPY", "name": "SPDR S&P 500 ETF Trust"},
+  {"code": "QQQ", "name": "Invesco QQQ Trust (Nasdaq 100)"},
+  {"code": "VOO", "name": "Vanguard S&P 500 ETF"},
+  {"code": "VTI", "name": "Vanguard Total Stock Market ETF"},
+  {"code": "IVV", "name": "iShares Core S&P 500 ETF"},
+  {"code": "DIA", "name": "SPDR Dow Jones Industrial Average ETF"},
+  {"code": "IWM", "name": "iShares Russell 2000 ETF"},
+  {"code": "SMH", "name": "VanEck Semiconductor ETF"},
+  {"code": "SOXX", "name": "iShares Semiconductor ETF"},
+  {"code": "ARKK", "name": "ARK Innovation ETF"},
+  {"code": "SCHD", "name": "Schwab U.S. Dividend Equity ETF"},
+  {"code": "VYM", "name": "Vanguard High Dividend Yield ETF"},
+  {"code": "XLK", "name": "Technology Select Sector SPDR Fund"},
+  {"code": "XLF", "name": "Financial Select Sector SPDR Fund"},
+  {"code": "XLE", "name": "Energy Select Sector SPDR Fund"},
+  {"code": "XLV", "name": "Health Care Select Sector SPDR Fund"},
+  {"code": "XLI", "name": "Industrial Select Sector SPDR Fund"},
+  {"code": "XLY", "name": "Consumer Discretionary Select SPDR"},
+  {"code": "XLP", "name": "Consumer Staples Select SPDR"},
+  {"code": "XLU", "name": "Utilities Select Sector SPDR Fund"},
+  {"code": "XLB", "name": "Materials Select Sector SPDR Fund"},
+  {"code": "VNQ", "name": "Vanguard Real Estate ETF"},
+  {"code": "GLD", "name": "SPDR Gold Shares ETF"},
+  {"code": "IAU", "name": "iShares Gold Trust ETF"},
+  {"code": "SLV", "name": "iShares Silver Trust ETF"},
+  {"code": "TLT", "name": "iShares 20+ Year Treasury Bond ETF"},
+  {"code": "BND", "name": "Vanguard Total Bond Market ETF"},
+  {"code": "AGG", "name": "iShares Core U.S. Aggregate Bond ETF"},
+  {"code": "JEPI", "name": "JPMorgan Equity Premium Income ETF"},
+  {"code": "JEPQ", "name": "JPMorgan Nasdaq Equity Premium Income ETF"},
+  {"code": "TQQQ", "name": "ProShares UltraPro QQQ (3x)"},
+  {"code": "SQQQ", "name": "ProShares UltraPro Short QQQ (-3x)"},
+  {"code": "SOXL", "name": "Direxion Daily Semiconductor Bull 3X"},
+  {"code": "VGT", "name": "Vanguard Information Technology ETF"},
+  {"code": "VWO", "name": "Vanguard FTSE Emerging Markets ETF"},
+  {"code": "VEA", "name": "Vanguard FTSE Developed Markets ETF"},
+  {"code": "VT", "name": "Vanguard Total World Stock ETF"},
+  {"code": "VXUS", "name": "Vanguard Total International Stock ETF"},
+  {"code": "IBIT", "name": "iShares Bitcoin Trust ETF"},
+  {"code": "FBTC", "name": "Fidelity Wise Origin Bitcoin Fund"},
+  {"code": "ETHA", "name": "iShares Ethereum Trust ETF"},
+  {"code": "URA", "name": "Global X Uranium ETF"},
+  {"code": "LIT", "name": "Global X Lithium & Battery Tech ETF"},
+  {"code": "TAN", "name": "Invesco Solar ETF"},
+  {"code": "ICLN", "name": "iShares Global Clean Energy ETF"},
+  {"code": "XBI", "name": "SPDR S&P Biotech ETF"}
+]
+
+POPULAR_FONLAR = [
+  {
+    "code": "TI3",
+    "name": "İş Portföy BIST Teknoloji Ağırlıklı Sınırlamalı Hisse Fonu"
+  },
+  {
+    "code": "TCD",
+    "name": "Tacirler Portföy Değişken Fon"
+  },
+  {
+    "code": "MAC",
+    "name": "Marmara Capital Portföy Hisse Senedi Fonu"
+  },
+  {
+    "code": "IIH",
+    "name": "İstanbul Portföy Üçüncü Hisse Senedi Fonu"
+  },
+  {
+    "code": "AFT",
+    "name": "Ak Portföy Yeni Teknolojiler Yabancı Hisse Senedi Fonu"
+  },
+  {
+    "code": "YAY",
+    "name": "Yapı Kredi Portföy Koç Holding İştirak Fonu"
+  },
+  {
+    "code": "TUA",
+    "name": "Tacirler Portföy Altın Fonu"
+  },
+  {
+    "code": "KZL",
+    "name": "Kuveyt Türk Portföy Altın Katılım Fonu"
+  },
+  {
+    "code": "ZP6",
+    "name": "Ziraat Portföy Altın Katılım Fonu"
+  },
+  {
+    "code": "IDH",
+    "name": "İş Portföy BIST 100 Dışı Şirketler Hisse Fonu"
+  },
+  {
+    "code": "BIO",
+    "name": "QNB Finans Portföy Teknoloji Sektörü Fonu"
+  },
+  {
+    "code": "OJT",
+    "name": "QNB Finans Portföy Sağlık Sektörü Fonu"
+  },
+  {
+    "code": "IPB",
+    "name": "İstanbul Portföy Birinci Değişken Fon"
+  },
+  {
+    "code": "GMR",
+    "name": "Gedik Portföy İkinci Hisse Senedi Fonu"
+  },
+  {
+    "code": "BUY",
+    "name": "Bursa Portföy Birinci Hisse Senedi Fonu"
+  },
+  {
+    "code": "KLU",
+    "name": "Kalyon Portföy Para Piyasası Fonu"
+  },
+  {
+    "code": "NVB",
+    "name": "Neo Portföy Birinci Değişken Fon"
+  },
+  {
+    "code": "NRC",
+    "name": "Neo Portföy İkinci Hisse Senedi Fonu"
+  },
+  {
+    "code": "ZPE",
+    "name": "Ziraat Portföy Katılım Endeksi Fonu"
+  },
+  {
+    "code": "MPS",
+    "name": "Mükafat Portföy Katılım Fonu"
+  },
+  {
+    "code": "CPU",
+    "name": "Ak Portföy Fintek ve Blokzincir Fonu"
+  },
+  {
+    "code": "IVY",
+    "name": "İstanbul Portföy Blockchain Teknolojileri Fonu"
+  },
+  {
+    "code": "AFA",
+    "name": "Ak Portföy Amerika Yabancı Hisse Senedi Fonu"
+  },
+  {
+    "code": "AFV",
+    "name": "Ak Portföy Avrupa Yabancı Hisse Senedi Fonu"
+  },
+  {
+    "code": "GBG",
+    "name": "Garanti Portföy Birinci Değişken Fon"
+  },
+  {
+    "code": "GTA",
+    "name": "Garanti Portföy Altın Fonu"
+  },
+  {
+    "code": "GGK",
+    "name": "Garanti Portföy Kısa Vadeli Borçlanma Araçları Fonu"
+  },
+  {
+    "code": "PPZ",
+    "name": "Azimut Portföy Para Piyasası Fonu"
+  },
+  {
+    "code": "PAL",
+    "name": "Perform Portföy Birinci Değişken Fon"
+  },
+  {
+    "code": "TAU",
+    "name": "İş Portföy Bankacılık Endeksi Hisse Fonu"
+  },
+  {
+    "code": "TTE",
+    "name": "İş Portföy BIST Teknoloji Endeksi Fonu"
+  },
+  {
+    "code": "IKP",
+    "name": "İş Portföy Kıymetli Madenler Fonu"
+  },
+  {
+    "code": "TTA",
+    "name": "İş Portföy Altın Fonu"
+  },
+  {
+    "code": "YKT",
+    "name": "Yapı Kredi Portföy BIST 30 Fonu"
+  },
+  {
+    "code": "YTD",
+    "name": "Yapı Kredi Portföy Eurobond Borçlanma Fonu"
+  },
+  {
+    "code": "TLH",
+    "name": "TEB Portföy BIST 30 Dışı Fon"
+  },
+  {
+    "code": "TGE",
+    "name": "İş Portföy Emtia Yabancı BYF Fon Sepeti Fonu"
+  }
+]
+
+
 OTHER_LIST = {
     "ETF": POPULAR_ETFLER,
     "Fon": POPULAR_FONLAR,
@@ -3990,205 +4192,6 @@ OTHER_LIST = {
 
 
 
-POPULAR_ETFLER = [
-  {"code": "SPY", "name": "SPDR S&P 500 ETF Trust"},
-  {"code": "QQQ", "name": "Invesco QQQ Trust (Nasdaq 100)"},
-  {"code": "VOO", "name": "Vanguard S&P 500 ETF"},
-  {"code": "VTI", "name": "Vanguard Total Stock Market ETF"},
-  {"code": "IVV", "name": "iShares Core S&P 500 ETF"},
-  {"code": "DIA", "name": "SPDR Dow Jones Industrial Average ETF"},
-  {"code": "IWM", "name": "iShares Russell 2000 ETF"},
-  {"code": "SMH", "name": "VanEck Semiconductor ETF"},
-  {"code": "SOXX", "name": "iShares Semiconductor ETF"},
-  {"code": "ARKK", "name": "ARK Innovation ETF"},
-  {"code": "SCHD", "name": "Schwab U.S. Dividend Equity ETF"},
-  {"code": "VYM", "name": "Vanguard High Dividend Yield ETF"},
-  {"code": "XLK", "name": "Technology Select Sector SPDR Fund"},
-  {"code": "XLF", "name": "Financial Select Sector SPDR Fund"},
-  {"code": "XLE", "name": "Energy Select Sector SPDR Fund"},
-  {"code": "XLV", "name": "Health Care Select Sector SPDR Fund"},
-  {"code": "XLI", "name": "Industrial Select Sector SPDR Fund"},
-  {"code": "XLY", "name": "Consumer Discretionary Select SPDR"},
-  {"code": "XLP", "name": "Consumer Staples Select SPDR"},
-  {"code": "XLU", "name": "Utilities Select Sector SPDR Fund"},
-  {"code": "XLB", "name": "Materials Select Sector SPDR Fund"},
-  {"code": "VNQ", "name": "Vanguard Real Estate ETF"},
-  {"code": "GLD", "name": "SPDR Gold Shares ETF"},
-  {"code": "IAU", "name": "iShares Gold Trust ETF"},
-  {"code": "SLV", "name": "iShares Silver Trust ETF"},
-  {"code": "TLT", "name": "iShares 20+ Year Treasury Bond ETF"},
-  {"code": "BND", "name": "Vanguard Total Bond Market ETF"},
-  {"code": "AGG", "name": "iShares Core U.S. Aggregate Bond ETF"},
-  {"code": "JEPI", "name": "JPMorgan Equity Premium Income ETF"},
-  {"code": "JEPQ", "name": "JPMorgan Nasdaq Equity Premium Income ETF"},
-  {"code": "TQQQ", "name": "ProShares UltraPro QQQ (3x)"},
-  {"code": "SQQQ", "name": "ProShares UltraPro Short QQQ (-3x)"},
-  {"code": "SOXL", "name": "Direxion Daily Semiconductor Bull 3X"},
-  {"code": "VGT", "name": "Vanguard Information Technology ETF"},
-  {"code": "VWO", "name": "Vanguard FTSE Emerging Markets ETF"},
-  {"code": "VEA", "name": "Vanguard FTSE Developed Markets ETF"},
-  {"code": "VT", "name": "Vanguard Total World Stock ETF"},
-  {"code": "VXUS", "name": "Vanguard Total International Stock ETF"},
-  {"code": "IBIT", "name": "iShares Bitcoin Trust ETF"},
-  {"code": "FBTC", "name": "Fidelity Wise Origin Bitcoin Fund"},
-  {"code": "ETHA", "name": "iShares Ethereum Trust ETF"},
-  {"code": "URA", "name": "Global X Uranium ETF"},
-  {"code": "LIT", "name": "Global X Lithium & Battery Tech ETF"},
-  {"code": "TAN", "name": "Invesco Solar ETF"},
-  {"code": "ICLN", "name": "iShares Global Clean Energy ETF"},
-  {"code": "XBI", "name": "SPDR S&P Biotech ETF"}
-]
-
-POPULAR_FONLAR = [
-  {
-    "code": "TI3",
-    "name": "İş Portföy BIST Teknoloji Ağırlıklı Sınırlamalı Hisse Fonu"
-  },
-  {
-    "code": "TCD",
-    "name": "Tacirler Portföy Değişken Fon"
-  },
-  {
-    "code": "MAC",
-    "name": "Marmara Capital Portföy Hisse Senedi Fonu"
-  },
-  {
-    "code": "IIH",
-    "name": "İstanbul Portföy Üçüncü Hisse Senedi Fonu"
-  },
-  {
-    "code": "AFT",
-    "name": "Ak Portföy Yeni Teknolojiler Yabancı Hisse Senedi Fonu"
-  },
-  {
-    "code": "YAY",
-    "name": "Yapı Kredi Portföy Koç Holding İştirak Fonu"
-  },
-  {
-    "code": "TUA",
-    "name": "Tacirler Portföy Altın Fonu"
-  },
-  {
-    "code": "KZL",
-    "name": "Kuveyt Türk Portföy Altın Katılım Fonu"
-  },
-  {
-    "code": "ZP6",
-    "name": "Ziraat Portföy Altın Katılım Fonu"
-  },
-  {
-    "code": "IDH",
-    "name": "İş Portföy BIST 100 Dışı Şirketler Hisse Fonu"
-  },
-  {
-    "code": "BIO",
-    "name": "QNB Finans Portföy Teknoloji Sektörü Fonu"
-  },
-  {
-    "code": "OJT",
-    "name": "QNB Finans Portföy Sağlık Sektörü Fonu"
-  },
-  {
-    "code": "IPB",
-    "name": "İstanbul Portföy Birinci Değişken Fon"
-  },
-  {
-    "code": "GMR",
-    "name": "Gedik Portföy İkinci Hisse Senedi Fonu"
-  },
-  {
-    "code": "BUY",
-    "name": "Bursa Portföy Birinci Hisse Senedi Fonu"
-  },
-  {
-    "code": "KLU",
-    "name": "Kalyon Portföy Para Piyasası Fonu"
-  },
-  {
-    "code": "NVB",
-    "name": "Neo Portföy Birinci Değişken Fon"
-  },
-  {
-    "code": "NRC",
-    "name": "Neo Portföy İkinci Hisse Senedi Fonu"
-  },
-  {
-    "code": "ZPE",
-    "name": "Ziraat Portföy Katılım Endeksi Fonu"
-  },
-  {
-    "code": "MPS",
-    "name": "Mükafat Portföy Katılım Fonu"
-  },
-  {
-    "code": "CPU",
-    "name": "Ak Portföy Fintek ve Blokzincir Fonu"
-  },
-  {
-    "code": "IVY",
-    "name": "İstanbul Portföy Blockchain Teknolojileri Fonu"
-  },
-  {
-    "code": "AFA",
-    "name": "Ak Portföy Amerika Yabancı Hisse Senedi Fonu"
-  },
-  {
-    "code": "AFV",
-    "name": "Ak Portföy Avrupa Yabancı Hisse Senedi Fonu"
-  },
-  {
-    "code": "GBG",
-    "name": "Garanti Portföy Birinci Değişken Fon"
-  },
-  {
-    "code": "GTA",
-    "name": "Garanti Portföy Altın Fonu"
-  },
-  {
-    "code": "GGK",
-    "name": "Garanti Portföy Kısa Vadeli Borçlanma Araçları Fonu"
-  },
-  {
-    "code": "PPZ",
-    "name": "Azimut Portföy Para Piyasası Fonu"
-  },
-  {
-    "code": "PAL",
-    "name": "Perform Portföy Birinci Değişken Fon"
-  },
-  {
-    "code": "TAU",
-    "name": "İş Portföy Bankacılık Endeksi Hisse Fonu"
-  },
-  {
-    "code": "TTE",
-    "name": "İş Portföy BIST Teknoloji Endeksi Fonu"
-  },
-  {
-    "code": "IKP",
-    "name": "İş Portföy Kıymetli Madenler Fonu"
-  },
-  {
-    "code": "TTA",
-    "name": "İş Portföy Altın Fonu"
-  },
-  {
-    "code": "YKT",
-    "name": "Yapı Kredi Portföy BIST 30 Fonu"
-  },
-  {
-    "code": "YTD",
-    "name": "Yapı Kredi Portföy Eurobond Borçlanma Fonu"
-  },
-  {
-    "code": "TLH",
-    "name": "TEB Portföy BIST 30 Dışı Fon"
-  },
-  {
-    "code": "TGE",
-    "name": "İş Portföy Emtia Yabancı BYF Fon Sepeti Fonu"
-  }
-]
 
 
 
