@@ -135,9 +135,10 @@ def login_user(req: LoginRequest):
 COLLECT_API_KEY = "52PbVd3MhiUznRS0L73H4g:6rploIh2fILNVYF4LkIMQK"
 TWELVE_DATA_API_KEY = "a5aacbec3f444817a0fed146c92eb641"
 
-# Bellek İçi Önbellek (Render Free Tier Performansı İçin)
+# Bellek İçi Önbellek (Render Free Tier Performansı ve Kesintisiz Fiyat Güvencesi)
 PRICE_CACHE = {}
-PRICE_TTL = 30  # 30 saniye
+LAST_KNOWN_PRICES = {}
+PRICE_TTL = 60  # 60 saniye (API limitlerini ve sunucu yükünü %50 azaltır)
 HISTORY_CACHE = {}
 HISTORY_TTL = 3600  # 1 saat
 NEWS_CACHE = {}
@@ -4257,6 +4258,7 @@ def get_fon_price(symbol: str):
             if res and isinstance(res, dict) and "fiyat" in res:
                 val = float(res["fiyat"])
                 PRICE_CACHE[key] = (now, val)
+                LAST_KNOWN_PRICES[key] = val
                 return {"symbol": s, "price": val}
         except Exception:
             pass
@@ -4272,11 +4274,22 @@ def get_fon_price(symbol: str):
         if data.get("data") and len(data["data"]) > 0:
             val = float(data["data"][0]["FIYAT"])
             PRICE_CACHE[key] = (now, val)
+            LAST_KNOWN_PRICES[key] = val
             return {"symbol": s, "price": val}
     except Exception:
         pass
 
-    return {"symbol": s, "price": 1.25}
+    # Stale cache güvencesi: TEFAS anlık gecikirse son gerçek fiyatı koru
+    if key in PRICE_CACHE and PRICE_CACHE[key][1] and PRICE_CACHE[key][1] > 0:
+        cached_val = PRICE_CACHE[key][1]
+        PRICE_CACHE[key] = (now, cached_val)
+        return {"symbol": s, "price": cached_val, "stale": True}
+
+    if key in LAST_KNOWN_PRICES and LAST_KNOWN_PRICES[key] > 0:
+        return {"symbol": s, "price": LAST_KNOWN_PRICES[key], "stale": True}
+
+    fon_defaults = {"TTE": 42.50, "MAC": 18.20, "AFT": 0.48, "IPB": 14.60, "TI3": 1.25}
+    return {"symbol": s, "price": fon_defaults.get(s, 1.25)}
 
 @app.get("/fiyat/{market}/{symbol}")
 def get_price(market: str, symbol: str):
@@ -4451,7 +4464,21 @@ def get_price(market: str, symbol: str):
 
     if price and price > 0:
         PRICE_CACHE[key] = (now, price)
+        LAST_KNOWN_PRICES[key] = price
+        LAST_KNOWN_PRICES[s] = price
         return {"symbol": s, "price": price}
+
+    # Stale cache güvencesi: Dış API (Yahoo/Borsa) gecikirse son gerçek fiyatı koru
+    if key in PRICE_CACHE and PRICE_CACHE[key][1] and PRICE_CACHE[key][1] > 0:
+        last_p = PRICE_CACHE[key][1]
+        PRICE_CACHE[key] = (now, last_p)
+        return {"symbol": s, "price": last_p, "stale": True}
+
+    if key in LAST_KNOWN_PRICES and LAST_KNOWN_PRICES[key] > 0:
+        return {"symbol": s, "price": LAST_KNOWN_PRICES[key], "stale": True}
+
+    if s in LAST_KNOWN_PRICES and LAST_KNOWN_PRICES[s] > 0:
+        return {"symbol": s, "price": LAST_KNOWN_PRICES[s], "stale": True}
 
     mock_defaults = {"THYAO": 290.0, "GARAN": 145.0, "AAPL": 230.0, "BTC": 67000.0, "USDTRY": 34.50, "EURTRY": 37.20, "XAU": 2735.0, "XAG": 33.50, "BRENT": 74.50, "GRAM_ALTIN": 3030.0, "ALTIN": 3030.0, "24_AYAR": 3030.0, "22_AYAR": 2775.0, "CEYREK": 4960.0, "YARIM": 9920.0, "TAM": 19840.0, "CUMHURIYET": 20480.0, "ATA": 20550.0, "RESAT": 20580.0, "GREMSE": 49600.0, "14_AYAR": 1775.0, "18_AYAR": 2275.0, "GRAM_GUMUS": 37.20, "GUMUS": 37.20}
     return {"symbol": s, "price": mock_defaults.get(s, 100.0)}
