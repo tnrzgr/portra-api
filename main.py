@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import hashlib
@@ -2548,6 +2549,10 @@ OTHER_LIST = {
     "Fon": POPULAR_FONLAR,
     "ABD": [
     {
+        "code": "TSM",
+        "name": "Taiwan Semiconductor Manufacturing (TSMC)"
+    },
+    {
         "code": "MMM",
         "name": "3M"
     },
@@ -4135,6 +4140,8 @@ OTHER_LIST = {
     }
 ],
     "Emtia": [
+        {"code": "SPOT_ALTIN", "name": "Spot Altın (Gram ₺)"},
+        {"code": "SPOT_ONS", "name": "Spot Ons Altın ($ / Ounce)"},
         {"code": "GRAM_ALTIN", "name": "Gram Altın (24 Ayar ₺)"},
         {"code": "22_AYAR", "name": "22 Ayar Bilezik / Altın (Gram ₺)"},
         {"code": "CEYREK", "name": "Çeyrek Altın (₺)"},
@@ -4263,8 +4270,26 @@ def get_varliklar(market: str):
             return OTHER_LIST[k]
     return []
 
+FONLAR_CACHE = {"ts": 0, "data": []}
+
 @app.get("/fonlar")
 def get_fonlar():
+    now = time.time()
+    if FONLAR_CACHE["data"] and now - FONLAR_CACHE["ts"] < 3600:
+        return FONLAR_CACHE["data"]
+    try:
+        r = requests.get("https://fonfiyat.com.tr/v1/funds.json", timeout=8, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"})
+        if r.status_code == 200:
+            items = r.json()
+            if isinstance(items, list) and len(items) > 0:
+                data = [{"code": it.get("kod", ""), "name": it.get("ad", "")} for it in items if it.get("kod")]
+                if data:
+                    FONLAR_CACHE["ts"] = now
+                    FONLAR_CACHE["data"] = data
+                    return data
+    except Exception as e:
+        print("fonfiyat tum fonlar hatasi:", e)
+
     if tefasmak:
         try:
             tum = tefasmak.tum_fonlar()
@@ -4277,8 +4302,8 @@ def get_fonlar():
                         data.append({"code": code, "name": name})
                 if data:
                     return data
-        except Exception as e:
-            print("tefasmak fon listeleme hatası:", e)
+        except Exception:
+            pass
     return POPULAR_FONLAR
 
 @app.get("/fon/{symbol}")
@@ -4288,6 +4313,20 @@ def get_fon_price(symbol: str):
     now = time.time()
     if key in PRICE_CACHE and now - PRICE_CACHE[key][0] < PRICE_TTL:
         return {"symbol": s, "price": PRICE_CACHE[key][1]}
+
+    # 1. fonfiyat.com.tr gercek TEFAS API (hizli, guncel ve bot filtresiz)
+    try:
+        r = requests.get(f"https://fonfiyat.com.tr/v1/funds/{s}.json", timeout=5, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"})
+        if r.status_code == 200:
+            data = r.json()
+            if isinstance(data, dict) and "fiyat" in data and data["fiyat"]:
+                val = float(data["fiyat"])
+                PRICE_CACHE[key] = (now, val)
+                LAST_KNOWN_PRICES[key] = val
+                LAST_KNOWN_PRICES[s] = val
+                return {"symbol": s, "price": val}
+    except Exception:
+        pass
 
     if tefasmak:
         try:
@@ -4300,23 +4339,7 @@ def get_fon_price(symbol: str):
         except Exception:
             pass
 
-    try:
-        r = requests.post(
-            "https://www.tefas.gov.tr/api/DB/BindHistoryInfo",
-            data={"fontip": "YAT", "fonkod": s},
-            timeout=5,
-            headers=NEWS_HEADERS
-        )
-        data = r.json()
-        if data.get("data") and len(data["data"]) > 0:
-            val = float(data["data"][0]["FIYAT"])
-            PRICE_CACHE[key] = (now, val)
-            LAST_KNOWN_PRICES[key] = val
-            return {"symbol": s, "price": val}
-    except Exception:
-        pass
-
-    # Stale cache güvencesi: TEFAS anlık gecikirse son gerçek fiyatı koru
+    # Stale cache guvencesi: Dis servis gecikirse son gercek fiyati koru
     if key in PRICE_CACHE and PRICE_CACHE[key][1] and PRICE_CACHE[key][1] > 0:
         cached_val = PRICE_CACHE[key][1]
         PRICE_CACHE[key] = (now, cached_val)
@@ -4325,7 +4348,7 @@ def get_fon_price(symbol: str):
     if key in LAST_KNOWN_PRICES and LAST_KNOWN_PRICES[key] > 0:
         return {"symbol": s, "price": LAST_KNOWN_PRICES[key], "stale": True}
 
-    fon_defaults = {"TTE": 42.50, "MAC": 18.20, "AFT": 0.48, "IPB": 14.60, "TI3": 1.25}
+    fon_defaults = {"TTE": 42.50, "MAC": 18.20, "AFT": 0.94, "IPB": 14.60, "TI3": 1.25, "AES": 0.23}
     return {"symbol": s, "price": fon_defaults.get(s, 1.25)}
 
 @app.get("/fiyat/{market}/{symbol}")
@@ -4432,7 +4455,7 @@ def get_price(market: str, symbol: str):
         is_tr_gold = s in [
             "GRAM_ALTIN", "ALTIN", "24_AYAR", "22_AYAR", "CEYREK",
             "YARIM", "TAM", "CUMHURIYET", "ATA", "RESAT", "GREMSE",
-            "14_AYAR", "18_AYAR", "GRAM_GUMUS", "GUMUS"
+            "14_AYAR", "18_AYAR", "GRAM_GUMUS", "GUMUS", "SPOT_ALTIN"
         ]
         if is_tr_gold:
             try:
@@ -4447,7 +4470,7 @@ def get_price(market: str, symbol: str):
                 
                 gram_24k_tl = (ons_usd / 31.1034768) * usd_try
                 
-                if s in ["GRAM_ALTIN", "ALTIN", "24_AYAR"]:
+                if s in ["GRAM_ALTIN", "ALTIN", "24_AYAR", "SPOT_ALTIN"]:
                     price = round(gram_24k_tl, 2)
                 elif s == "22_AYAR":
                     price = round(gram_24k_tl * 0.916, 2)
@@ -4486,7 +4509,7 @@ def get_price(market: str, symbol: str):
                 }
                 price = tr_gold_defaults.get(s, 3030.0)
         else:
-            emtia_target = "GC=F" if "XAU" in s else "SI=F" if "XAG" in s else "BZ=F" if "BRENT" in s else "CL=F" if "CRUDE" in s else s
+            emtia_target = "GC=F" if ("XAU" in s or "SPOT_ONS" in s) else "SI=F" if "XAG" in s else "BZ=F" if "BRENT" in s else "CL=F" if "CRUDE" in s else s
             try:
                 r = requests.get(
                     f"https://query1.finance.yahoo.com/v8/finance/chart/{emtia_target}?interval=1d&range=1d",
@@ -4721,6 +4744,58 @@ def get_dividend_news(market: str, symbol: str):
     items = fetch_rss_items(url, limit=6)
     NEWS_CACHE[key] = (time.time(), items)
     return items
+
+
+@app.get("/privacy", response_class=HTMLResponse)
+@app.get("/gizlilik", response_class=HTMLResponse)
+def privacy_policy():
+    return """
+    <!DOCTYPE html>
+    <html lang="tr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>PORtra - Gizlilik Politikası (Privacy Policy)</title>
+        <style>
+            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; max-width: 800px; margin: 40px auto; padding: 0 20px; color: #222; background: #fafafa; }
+            h1 { color: #0d47a1; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px; }
+            h2 { color: #1565c0; margin-top: 25px; }
+            .badge { display: inline-block; background: #e3f2fd; color: #0d47a1; padding: 4px 10px; border-radius: 6px; font-size: 13px; font-weight: 600; margin-bottom: 15px; }
+            .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+            footer { margin-top: 40px; text-align: center; font-size: 13px; color: #777; border-top: 1px solid #e0e0e0; padding-top: 15px; }
+        </style>
+    </head>
+    <body>
+        <div class="card">
+            <h1>PORtra — Gizlilik Politikası</h1>
+            <div class="badge">Son Güncelleme: 24 Ekim 2026</div>
+
+            <p><strong>PORtra</strong> ("biz", "uygulama"), kullanıcılarımızın gizliliğine ve kişisel verilerinin korunmasına en üst düzeyde önem vermektedir. İşbu Gizlilik Politikası, uygulamamızı kullandığınızda verilerinizin nasıl işlendiğini, saklandığını ve korunduğunu açıklar.</p>
+
+            <h2>1. Toplanan Veriler ve Saklama Yöntemi</h2>
+            <p><strong>Yerel Depolama (AsyncStorage):</strong> Portföyünüze eklediğiniz hisse, kripto, fon, emtia alım-satım işlemleri, maliyetler, lot adetleri ve kâr/zarar hesaplamaları tamamen cihazınızın kendi yerel belleğinde saklanır. Sunucularımıza hiçbir kişisel finansal portföy tutarınız aktarılmaz veya saklanmaz.</p>
+            <p><strong>Kullanıcı Hesabı & İletişim:</strong> Uygulama içi kimlik doğrulama veya destek/geri bildirim talebinde bulunduğunuzda ad, e-posta adresi gibi yalnızca talebinizi karşılamak için gerekli olan temel bilgiler toplanır.</p>
+
+            <h2>2. Üçüncü Taraf Servisler ve Piyasa Verileri</h2>
+            <p>Uygulama, canlı piyasa fiyatları (BIST, ABD Borsaları, Kripto, TEFAS Fonları, Altın) ve finansal haberler için piyasa veri sağlayıcılarına yalnızca anonim hisse sembolü sorguları gönderir. Bu sorgularda hiçbir kullanıcı kimliği veya cüzdan bilgisi paylaşılmaz.</p>
+
+            <h2>3. Finansal İşlemler ve Aracı Kurum Ayrımı</h2>
+            <p>PORtra bir yatırım danışmanlığı şirketi, banka veya aracı kurum değildir. Uygulama üzerinden hiçbir doğrudan para transferi, hisse alım-satım emri veya takas işlemi gerçekleştirilmez. Tüm hesaplama ve araçlar yalnızca kişisel takip ve bilgilendirme amaçlıdır.</p>
+
+            <h2>4. Veri Güvenliği</h2>
+            <p>Verilerinizin güvenliğini sağlamak için endüstri standardı güvenlik önlemleri uygulanmaktadır. Biyometrik giriş (Face ID / Parmak İzi) verileriniz doğrudan işletim sisteminizin güvenli donanımı (Secure Enclave / Keystore) tarafından işlenir; uygulama tarafından asla okunamaz veya kopyalanamaz.</p>
+
+            <h2>5. İletişim ve Veri Silme Hakları</h2>
+            <p>Hesabınızın veya destek geçmişinizin silinmesini talep etmek, soru ve önerilerinizi iletmek için bizimle doğrudan iletişime geçebilirsiniz:</p>
+            <p><strong>E-posta:</strong> <a href="mailto:tnrzgr@gmail.com">tnrzgr@gmail.com</a></p>
+
+            <footer>
+                &copy; 2026 PORtra. Tüm Hakları Saklıdır.
+            </footer>
+        </div>
+    </body>
+    </html>
+    """
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
