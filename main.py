@@ -2344,52 +2344,138 @@ BIST_LIST = [
 
 
 POPULAR_ETFLER = [
-  {"code": "SPY", "name": "SPDR S&P 500 ETF Trust"},
+  {"code": "SPY", "name": "SPDR S&P 500 ETF Trust (S&P 500)"},
+  {"code": "VOO", "name": "Vanguard S&P 500 ETF (Düşük Maliyetli S&P 500)"},
+  {"code": "IVV", "name": "iShares Core S&P 500 ETF (S&P 500)"},
+  {"code": "SPLG", "name": "SPDR Portfolio S&P 500 ETF (Ultra Düşük Masraflı)"},
   {"code": "QQQ", "name": "Invesco QQQ Trust (Nasdaq 100)"},
-  {"code": "VOO", "name": "Vanguard S&P 500 ETF"},
-  {"code": "VTI", "name": "Vanguard Total Stock Market ETF"},
-  {"code": "IVV", "name": "iShares Core S&P 500 ETF"},
-  {"code": "DIA", "name": "SPDR Dow Jones Industrial Average ETF"},
-  {"code": "IWM", "name": "iShares Russell 2000 ETF"},
-  {"code": "SMH", "name": "VanEck Semiconductor ETF"},
-  {"code": "SOXX", "name": "iShares Semiconductor ETF"},
-  {"code": "ARKK", "name": "ARK Innovation ETF"},
-  {"code": "SCHD", "name": "Schwab U.S. Dividend Equity ETF"},
-  {"code": "VYM", "name": "Vanguard High Dividend Yield ETF"},
-  {"code": "XLK", "name": "Technology Select Sector SPDR Fund"},
-  {"code": "XLF", "name": "Financial Select Sector SPDR Fund"},
-  {"code": "XLE", "name": "Energy Select Sector SPDR Fund"},
-  {"code": "XLV", "name": "Health Care Select Sector SPDR Fund"},
-  {"code": "XLI", "name": "Industrial Select Sector SPDR Fund"},
-  {"code": "XLY", "name": "Consumer Discretionary Select SPDR"},
-  {"code": "XLP", "name": "Consumer Staples Select SPDR"},
-  {"code": "XLU", "name": "Utilities Select Sector SPDR Fund"},
-  {"code": "XLB", "name": "Materials Select Sector SPDR Fund"},
-  {"code": "VNQ", "name": "Vanguard Real Estate ETF"},
-  {"code": "GLD", "name": "SPDR Gold Shares ETF"},
-  {"code": "IAU", "name": "iShares Gold Trust ETF"},
-  {"code": "SLV", "name": "iShares Silver Trust ETF"},
-  {"code": "TLT", "name": "iShares 20+ Year Treasury Bond ETF"},
-  {"code": "BND", "name": "Vanguard Total Bond Market ETF"},
-  {"code": "AGG", "name": "iShares Core U.S. Aggregate Bond ETF"},
-  {"code": "JEPI", "name": "JPMorgan Equity Premium Income ETF"},
-  {"code": "JEPQ", "name": "JPMorgan Nasdaq Equity Premium Income ETF"},
-  {"code": "TQQQ", "name": "ProShares UltraPro QQQ (3x)"},
-  {"code": "SQQQ", "name": "ProShares UltraPro Short QQQ (-3x)"},
-  {"code": "SOXL", "name": "Direxion Daily Semiconductor Bull 3X"},
-  {"code": "VGT", "name": "Vanguard Information Technology ETF"},
-  {"code": "VWO", "name": "Vanguard FTSE Emerging Markets ETF"},
-  {"code": "VEA", "name": "Vanguard FTSE Developed Markets ETF"},
-  {"code": "VT", "name": "Vanguard Total World Stock ETF"},
-  {"code": "VXUS", "name": "Vanguard Total International Stock ETF"},
-  {"code": "IBIT", "name": "iShares Bitcoin Trust ETF"},
-  {"code": "FBTC", "name": "Fidelity Wise Origin Bitcoin Fund"},
-  {"code": "ETHA", "name": "iShares Ethereum Trust ETF"},
-  {"code": "URA", "name": "Global X Uranium ETF"},
-  {"code": "LIT", "name": "Global X Lithium & Battery Tech ETF"},
-  {"code": "TAN", "name": "Invesco Solar ETF"},
-  {"code": "ICLN", "name": "iShares Global Clean Energy ETF"},
-  {"code": "XBI", "name": "SPDR S&P Biotech ETF"}
+  {"code": "QQQM", "name": "Invesco NASDAQ 100 ETF (Düşük Gider Oranlı)"},
+  {"code": "DIA", "name": "SPDR Dow Jones Industrial Average ETF (Dow 30)"},
+  {"code": "VTI", "name": "Vanguard Total Stock Market ETF (Tüm ABD Borsası)"},
+  {"code": "ITOT", "name": "iShares Core S&P Total U.S. Stock Market ETF"},
+  {"code": "IWM", "name": "iShares Russell 2000 ETF (Küçük Ölçekli / Small-Cap)"},
+  {"code": "IJR", "name": "iShares Core S&P Small-Cap ETF"},
+  {"code": "IJH", "name": "iShares Core S&P Mid-Cap ETF (Orta Ölçekli)"},
+  {"code": "VO", "name": "Vanguard Mid-Cap ETF"},
+  {"code": "VB", "name": "Vanguard Small-Cap ETF"},
+  {"code": "RSP", "name": "Invesco S&P 500 Equal Weight ETF (Eşit Ağırlıklı S&P 500)"},
+  {"code": "SMH", "name": "VanEck Semiconductor ETF (Çip & Yarı İletken Sektörü)"},
+  {"code": "SOXX", "name": "iShares Semiconductor ETF (Yarı İletken Devleri)"},
+  {"code": "XLK", "name": "Technology Select Sector SPDR (Teknoloji Sektörü)"},
+  {"code": "VGT", "name": "Vanguard Information Technology ETF (Teknoloji Endeksi)"},
+  {"code": "ARKK", "name": "ARK Innovation ETF (Yıkıcı İnovasyon - Cathie Wood)"},
+  {"code": "ARKW", "name": "ARK Next Generation Internet ETF (İnternet Teknolojileri)"},
+  {"code": "ARKG", "name": "ARK Genomic Revolution ETF (Genomik & Biyoteknoloji)"},
+  {"code": "BOTZ", "name": "Global X Robotics & Artificial Intelligence ETF (Robotik & AI)"},
+  {"code": "AIQ", "name": "Global X Artificial Intelligence & Technology ETF (Yapay Zeka)"},
+  {"code": "ROBO", "name": "ROBO Global Robotics and Automation Index ETF"},
+  {"code": "IGV", "name": "iShares Expanded Tech-Software Sector ETF (Yazılım Sektörü)"},
+  {"code": "CIBR", "name": "First Trust NASDAQ Cybersecurity ETF (Siber Güvenlik)"},
+  {"code": "HACK", "name": "Amplify Cybersecurity ETF (Siber Savunma)"},
+  {"code": "SKYY", "name": "First Trust Cloud Computing ETF (Bulut Bilişim)"},
+  {"code": "FDN", "name": "First Trust Dow Jones Internet Index Fund (İnternet Devleri)"},
+  {"code": "WCLD", "name": "WisdomTree Cloud Computing Fund (Bulut Yazılımları)"},
+  {"code": "FINX", "name": "Global X FinTech ETF (Finansal Teknolojiler)"},
+  {"code": "BLOK", "name": "Amplify Transformational Data Sharing ETF (Blokzincir)"},
+  {"code": "SCHD", "name": "Schwab U.S. Dividend Equity ETF (Yüksek Temettü & Büyüme)"},
+  {"code": "VYM", "name": "Vanguard High Dividend Yield ETF (Yüksek Temettü Getirisi)"},
+  {"code": "JEPI", "name": "JPMorgan Equity Premium Income ETF (Aylık Temettü & Gelir)"},
+  {"code": "JEPQ", "name": "JPMorgan Nasdaq Equity Premium Income ETF (Nasdaq Aylık Gelir)"},
+  {"code": "DGRO", "name": "iShares Core Dividend Growth ETF (Temettü Büyümesi)"},
+  {"code": "HDV", "name": "iShares Core High Dividend ETF (Yüksek Temettü)"},
+  {"code": "VIG", "name": "Vanguard Dividend Appreciation ETF (Düzenli Temettü Artıranlar)"},
+  {"code": "NOBL", "name": "ProShares S&P 500 Dividend Aristocrats ETF (Temettü Aristokratları)"},
+  {"code": "SDY", "name": "SPDR S&P Dividend ETF (Temettü Gücü)"},
+  {"code": "DVY", "name": "iShares Select Dividend ETF"},
+  {"code": "SPYD", "name": "SPDR S&P 500 High Dividend ETF"},
+  {"code": "QYLD", "name": "Global X NASDAQ 100 Covered Call ETF (Aylık Yüksek Temettü)"},
+  {"code": "XYLD", "name": "Global X S&P 500 Covered Call ETF (S&P Opsiyon Temettüsü)"},
+  {"code": "GPIQ", "name": "Goldman Sachs Nasdaq-100 Premium Income ETF"},
+  {"code": "GPIX", "name": "Goldman Sachs S&P 500 Premium Income ETF"},
+  {"code": "XLF", "name": "Financial Select Sector SPDR Fund (Finans & Bankacılık)"},
+  {"code": "XLE", "name": "Energy Select Sector SPDR Fund (Enerji & Petrol Devleri)"},
+  {"code": "XLV", "name": "Health Care Select Sector SPDR Fund (Sağlık & İlaç)"},
+  {"code": "XLI", "name": "Industrial Select Sector SPDR Fund (Sanayi & Havacılık)"},
+  {"code": "XLY", "name": "Consumer Discretionary Select SPDR (Tüketici & E-Ticaret)"},
+  {"code": "XLP", "name": "Consumer Staples Select SPDR (Temel Tüketim Malları)"},
+  {"code": "XLU", "name": "Utilities Select Sector SPDR Fund (Elektrik & Altyapı)"},
+  {"code": "XLB", "name": "Materials Select Sector SPDR Fund (Hammadde & Kimya)"},
+  {"code": "XLC", "name": "Communication Services Select SPDR (İletişim & Medya)"},
+  {"code": "XLRE", "name": "Real Estate Select Sector SPDR Fund (Gayrimenkul / GYO)"},
+  {"code": "VNQ", "name": "Vanguard Real Estate ETF (ABD Gayrimenkul Yatırım Ortaklıkları)"},
+  {"code": "VNQI", "name": "Vanguard Global ex-U.S. Real Estate ETF (Küresel GYO)"},
+  {"code": "IYR", "name": "iShares U.S. Real Estate ETF (ABD Emlak & GYO)"},
+  {"code": "KRE", "name": "SPDR S&P Regional Banking ETF (Bölgesel Bankalar)"},
+  {"code": "XBI", "name": "SPDR S&P Biotech ETF (Biyoteknoloji Şirketleri)"},
+  {"code": "IBB", "name": "iShares Biotechnology ETF (Biyoteknoloji Devleri)"},
+  {"code": "XME", "name": "SPDR S&P Metals & Mining ETF (Metal ve Madencilik)"},
+  {"code": "XOP", "name": "SPDR S&P Oil & Gas Exploration & Production (Petrol Arama)"},
+  {"code": "OIH", "name": "VanEck Oil Services ETF (Petrol Ekipman ve Servisleri)"},
+  {"code": "ITA", "name": "iShares U.S. Aerospace & Defense ETF (Havacılık ve Savunma)"},
+  {"code": "PPA", "name": "Invesco Aerospace & Defense ETF (Savunma Sanayii)"},
+  {"code": "URA", "name": "Global X Uranium ETF (Uranyum & Nükleer Enerji)"},
+  {"code": "URNM", "name": "Sprott Uranium Miners ETF (Uranyum Madencileri)"},
+  {"code": "LIT", "name": "Global X Lithium & Battery Tech ETF (Lityum & Batarya Teknolojisi)"},
+  {"code": "TAN", "name": "Invesco Solar ETF (Güneş Enerjisi)"},
+  {"code": "ICLN", "name": "iShares Global Clean Energy ETF (Temiz & Yenilenebilir Enerji)"},
+  {"code": "PAVE", "name": "Global X U.S. Infrastructure Development ETF (ABD Altyapı)"},
+  {"code": "JETS", "name": "U.S. Global Jets ETF (Küresel Havayolu Şirketleri)"},
+  {"code": "TLT", "name": "iShares 20+ Year Treasury Bond ETF (20+ Yıllık Hazine Tahvili)"},
+  {"code": "IEF", "name": "iShares 7-10 Year Treasury Bond ETF (7-10 Yıllık Hazine Tahvili)"},
+  {"code": "SHY", "name": "iShares 1-3 Year Treasury Bond ETF (1-3 Yıllık Hazine Bonosu)"},
+  {"code": "SGOV", "name": "iShares 0-3 Month Treasury Bond ETF (0-3 Aylık Ultra Kısa Hazine Bonosu)"},
+  {"code": "BIL", "name": "SPDR Bloomberg 1-3 Month T-Bill ETF (1-3 Aylık Nakit Bonoları)"},
+  {"code": "BND", "name": "Vanguard Total Bond Market ETF (Toplam Tahvil Piyasası)"},
+  {"code": "AGG", "name": "iShares Core U.S. Aggregate Bond ETF (ABD Yatırım Dereceli Tahvil)"},
+  {"code": "LQD", "name": "iShares iBoxx $ Investment Grade Corporate Bond (Şirket Tahvili)"},
+  {"code": "HYG", "name": "iShares iBoxx $ High Yield Corporate Bond (Yüksek Getirili Şirket Tahvili)"},
+  {"code": "JNK", "name": "SPDR Bloomberg High Yield Bond ETF (Yüksek Riskli / Junk Bond)"},
+  {"code": "TIP", "name": "iShares TIPS Bond ETF (Enflasyona Endeksli Hazine Tahvili)"},
+  {"code": "BNDX", "name": "Vanguard Total International Bond ETF (Uluslararası Tahvil)"},
+  {"code": "EMB", "name": "iShares J.P. Morgan USD Emerging Markets Bond ETF (Gelişen Ülke Tahvili)"},
+  {"code": "GLD", "name": "SPDR Gold Shares ETF (Fiziki Altın ETF)"},
+  {"code": "IAU", "name": "iShares Gold Trust ETF (Düşük Masraflı Altın)"},
+  {"code": "SLV", "name": "iShares Silver Trust ETF (Fiziki Gümüş ETF)"},
+  {"code": "GDX", "name": "VanEck Gold Miners ETF (Altın Madenciliği Şirketleri)"},
+  {"code": "GDXJ", "name": "VanEck Junior Gold Miners ETF (Küçük Ölçekli Altın Madencileri)"},
+  {"code": "SIL", "name": "Global X Silver Miners ETF (Gümüş Madenciliği Şirketleri)"},
+  {"code": "COPX", "name": "Global X Copper Miners ETF (Bakır Madenciliği Şirketleri)"},
+  {"code": "CPER", "name": "United States Copper Index Fund (Fiziki Bakır)"},
+  {"code": "USO", "name": "United States Oil Fund (Ham Petrol WTI)"},
+  {"code": "BNO", "name": "United States Brent Oil Fund (Brent Petrol)"},
+  {"code": "UNG", "name": "United States Natural Gas Fund (Doğal Gaz)"},
+  {"code": "DBC", "name": "Invesco DB Commodity Index Tracking Fund (Geniş Emtia Sepeti)"},
+  {"code": "PDBC", "name": "Invesco Optimum Yield Diversified Commodity Strategy ETF"},
+  {"code": "DBA", "name": "Invesco DB Agriculture Fund (Tarımsal Emtialar)"},
+  {"code": "IBIT", "name": "iShares Bitcoin Trust ETF (BlackRock Spot Bitcoin)"},
+  {"code": "FBTC", "name": "Fidelity Wise Origin Bitcoin Fund (Fidelity Spot Bitcoin)"},
+  {"code": "ARKB", "name": "ARK 21Shares Bitcoin ETF (ARK Spot Bitcoin)"},
+  {"code": "BITB", "name": "Bitwise Bitcoin ETF (Spot Bitcoin)"},
+  {"code": "ETHA", "name": "iShares Ethereum Trust ETF (BlackRock Spot Ethereum)"},
+  {"code": "FETH", "name": "Fidelity Ethereum Fund (Fidelity Spot Ethereum)"},
+  {"code": "BITO", "name": "ProShares Bitcoin Strategy ETF (Bitcoin Vadeli Kontrat)"},
+  {"code": "VT", "name": "Vanguard Total World Stock ETF (Tüm Dünya Hisseleri)"},
+  {"code": "VEA", "name": "Vanguard FTSE Developed Markets ETF (Gelişmiş Piyasalar - ABD Hariç)"},
+  {"code": "VXUS", "name": "Vanguard Total International Stock ETF (ABD Dışı Dünya)"},
+  {"code": "VWO", "name": "Vanguard FTSE Emerging Markets ETF (Gelişmekte Olan Piyasalar)"},
+  {"code": "EEM", "name": "iShares MSCI Emerging Markets ETF (Gelişen Piyasalar)"},
+  {"code": "EFA", "name": "iShares MSCI EAFE ETF (Avrupa, Avustralya, Uzak Doğu)"},
+  {"code": "EWJ", "name": "iShares MSCI Japan ETF (Japonya Borsası)"},
+  {"code": "FXI", "name": "iShares China Large-Cap ETF (Çin Dev Şirketleri)"},
+  {"code": "KWEB", "name": "KraneShares CSI China Internet ETF (Çin İnternet & Teknoloji)"},
+  {"code": "MCHI", "name": "iShares MSCI China ETF (Geniş Çin Borsası)"},
+  {"code": "INDA", "name": "iShares MSCI India ETF (Hindistan Borsası)"},
+  {"code": "EWG", "name": "iShares MSCI Germany ETF (Almanya Borsası DAX)"},
+  {"code": "EWU", "name": "iShares MSCI United Kingdom ETF (Birleşik Krallık)"},
+  {"code": "TUR", "name": "iShares MSCI Turkey ETF (Türkiye BIST ABD ETF)"},
+  {"code": "TQQQ", "name": "ProShares UltraPro QQQ (3x Kaldıraçlı Nasdaq 100)"},
+  {"code": "SQQQ", "name": "ProShares UltraPro Short QQQ (-3x Ters Nasdaq 100)"},
+  {"code": "SOXL", "name": "Direxion Daily Semiconductor Bull 3X (3x Kaldıraçlı Yarı İletken)"},
+  {"code": "SOXS", "name": "Direxion Daily Semiconductor Bear 3X (-3x Ters Yarı İletken)"},
+  {"code": "UPRO", "name": "ProShares UltraPro S&P 500 (3x Kaldıraçlı S&P 500)"},
+  {"code": "SPXU", "name": "ProShares UltraPro Short S&P 500 (-3x Ters S&P 500)"},
+  {"code": "NVDL", "name": "GraniteShares 2x Long NVDA Daily ETF (2x Nvidia Kaldıraçlı)"},
+  {"code": "TSLL", "name": "Direxion Daily TSLA Bull 2X Shares (2x Tesla Kaldıraçlı)"}
 ]
 
 POPULAR_FONLAR = [
@@ -3977,168 +4063,133 @@ OTHER_LIST = {
         "name": "Verizon Communications Inc."
     }
 ],
-    "Kripto": [
-    {
-        "code": "BTC",
-        "name": "Bitcoin"
-    },
-    {
-        "code": "ETH",
-        "name": "Ethereum"
-    },
-    {
-        "code": "SOL",
-        "name": "Solana"
-    },
-    {
-        "code": "BNB",
-        "name": "BNB (Binance Coin)"
-    },
-    {
-        "code": "XRP",
-        "name": "XRP (Ripple)"
-    },
-    {
-        "code": "DOGE",
-        "name": "Dogecoin"
-    },
-    {
-        "code": "ADA",
-        "name": "Cardano"
-    },
-    {
-        "code": "AVAX",
-        "name": "Avalanche"
-    },
-    {
-        "code": "SHIB",
-        "name": "Shiba Inu"
-    },
-    {
-        "code": "DOT",
-        "name": "Polkadot"
-    },
-    {
-        "code": "LINK",
-        "name": "Chainlink"
-    },
-    {
-        "code": "SUI",
-        "name": "Sui"
-    },
-    {
-        "code": "NEAR",
-        "name": "NEAR Protocol"
-    },
-    {
-        "code": "TRX",
-        "name": "TRON"
-    },
-    {
-        "code": "APT",
-        "name": "Aptos"
-    },
-    {
-        "code": "PEPE",
-        "name": "Pepe"
-    },
-    {
-        "code": "LTC",
-        "name": "Litecoin"
-    },
-    {
-        "code": "BCH",
-        "name": "Bitcoin Cash"
-    },
-    {
-        "code": "MATIC",
-        "name": "Polygon (POL)"
-    },
-    {
-        "code": "UNI",
-        "name": "Uniswap"
-    },
-    {
-        "code": "ATOM",
-        "name": "Cosmos"
-    },
-    {
-        "code": "XLM",
-        "name": "Stellar"
-    },
-    {
-        "code": "ICP",
-        "name": "Internet Computer"
-    },
-    {
-        "code": "RENDER",
-        "name": "Render Token"
-    },
-    {
-        "code": "FET",
-        "name": "Artificial Superintelligence Alliance"
-    },
-    {
-        "code": "FIL",
-        "name": "Filecoin"
-    },
-    {
-        "code": "HBAR",
-        "name": "Hedera"
-    },
-    {
-        "code": "TAO",
-        "name": "Bittensor"
-    },
-    {
-        "code": "KAS",
-        "name": "Kaspa"
-    },
-    {
-        "code": "INJ",
-        "name": "Injective"
-    },
-    {
-        "code": "ARB",
-        "name": "Arbitrum"
-    },
-    {
-        "code": "OP",
-        "name": "Optimism"
-    },
-    {
-        "code": "RUNE",
-        "name": "THORChain"
-    },
-    {
-        "code": "AAVE",
-        "name": "Aave"
-    },
-    {
-        "code": "FTM",
-        "name": "Fantom (Sonic)"
-    },
-    {
-        "code": "WIF",
-        "name": "dogwifhat"
-    },
-    {
-        "code": "FLOKI",
-        "name": "Floki"
-    },
-    {
-        "code": "BONK",
-        "name": "Bonk"
-    },
-    {
-        "code": "TIA",
-        "name": "Celestia"
-    },
-    {
-        "code": "SEI",
-        "name": "Sei"
-    }
-],
+        "Kripto": [
+        {"code": "BTC", "name": "Bitcoin"},
+        {"code": "ETH", "name": "Ethereum"},
+        {"code": "SOL", "name": "Solana"},
+        {"code": "BNB", "name": "BNB (Binance Coin)"},
+        {"code": "XRP", "name": "XRP (Ripple)"},
+        {"code": "DOGE", "name": "Dogecoin"},
+        {"code": "ADA", "name": "Cardano"},
+        {"code": "AVAX", "name": "Avalanche"},
+        {"code": "SUI", "name": "Sui"},
+        {"code": "APT", "name": "Aptos"},
+        {"code": "NEAR", "name": "NEAR Protocol"},
+        {"code": "TON", "name": "Toncoin"},
+        {"code": "DOT", "name": "Polkadot"},
+        {"code": "LINK", "name": "Chainlink"},
+        {"code": "TRX", "name": "TRON"},
+        {"code": "KAS", "name": "Kaspa"},
+        {"code": "SEI", "name": "Sei Network"},
+        {"code": "ATOM", "name": "Cosmos"},
+        {"code": "ICP", "name": "Internet Computer"},
+        {"code": "HBAR", "name": "Hedera Hashgraph"},
+        {"code": "XLM", "name": "Stellar Lumens"},
+        {"code": "ALGO", "name": "Algorand"},
+        {"code": "FTM", "name": "Fantom (Sonic)"},
+        {"code": "INJ", "name": "Injective"},
+        {"code": "TIA", "name": "Celestia"},
+        {"code": "DYM", "name": "Dymension"},
+        {"code": "RON", "name": "Ronin Network"},
+        {"code": "KAVA", "name": "Kava"},
+        {"code": "MINA", "name": "Mina Protocol"},
+        {"code": "FLOW", "name": "Flow"},
+        {"code": "IOTA", "name": "IOTA"},
+        {"code": "EOS", "name": "EOS Network"},
+        {"code": "XTZ", "name": "Tezos"},
+        {"code": "NEO", "name": "Neo"},
+        {"code": "ZIL", "name": "Zilliqa"},
+        {"code": "QNT", "name": "Quant Network"},
+        {"code": "CFX", "name": "Conflux Network"},
+        {"code": "ROSE", "name": "Oasis Network"},
+        {"code": "ASTR", "name": "Astar Network"},
+        {"code": "MATIC", "name": "Polygon (POL)"},
+        {"code": "POL", "name": "Polygon Ecosystem Token"},
+        {"code": "ARB", "name": "Arbitrum"},
+        {"code": "OP", "name": "Optimism"},
+        {"code": "STRK", "name": "Starknet"},
+        {"code": "ZK", "name": "ZKsync"},
+        {"code": "MANTA", "name": "Manta Network"},
+        {"code": "METIS", "name": "Metis"},
+        {"code": "IMX", "name": "Immutable X"},
+        {"code": "BLAST", "name": "Blast L2"},
+        {"code": "TAO", "name": "Bittensor (Merkeziyetsiz AI)"},
+        {"code": "FET", "name": "Artificial Superintelligence Alliance (FET/ASI)"},
+        {"code": "RENDER", "name": "Render Network (GPU Dağıtık Bilişim)"},
+        {"code": "AKT", "name": "Akash Network (Bulut GPU Ağı)"},
+        {"code": "GRT", "name": "The Graph (Veri Sorgulama Protokolü)"},
+        {"code": "WLD", "name": "Worldcoin (Kimlik & AI)"},
+        {"code": "IO", "name": "io.net (Merkeziyetsiz GPU İşleme)"},
+        {"code": "ATH", "name": "Aethir (Dağıtık Bulut Bilişim)"},
+        {"code": "OCEAN", "name": "Ocean Protocol (Veri Pazaryeri)"},
+        {"code": "AGIX", "name": "SingularityNET (AI Ekosistemi)"},
+        {"code": "ARKHAM", "name": "Arkham Intelligence (On-Chain İstihbarat)"},
+        {"code": "UNI", "name": "Uniswap (DEX Lideri)"},
+        {"code": "AAVE", "name": "Aave (Kredi & Likidite Protokolü)"},
+        {"code": "MKR", "name": "Maker (Sky & DAI Ekosistemi)"},
+        {"code": "CRV", "name": "Curve DAO (Stabil Varlık Havuzu)"},
+        {"code": "LDO", "name": "Lido DAO (Likit Staking)"},
+        {"code": "RPL", "name": "Rocket Pool (ETH Likit Staking)"},
+        {"code": "PENDLE", "name": "Pendle Finance (Getiri & Faiz Ticareti)"},
+        {"code": "ENA", "name": "Ethena (Sentetik Dolar USDe)"},
+        {"code": "RUNE", "name": "THORChain (Çapraz Zincir Takas)"},
+        {"code": "SNX", "name": "Synthetix (Sentetik Varlıklar)"},
+        {"code": "DYDX", "name": "dYdX (Kaldıraçlı DEX)"},
+        {"code": "GMX", "name": "GMX (Merkeziyetsiz Türevler)"},
+        {"code": "JUP", "name": "Jupiter (Solana DEX Agregator)"},
+        {"code": "RAY", "name": "Raydium (Solana AMM Likidite)"},
+        {"code": "ORCA", "name": "Orca (Solana DEX)"},
+        {"code": "CAKE", "name": "PancakeSwap (BNB Chain DEX)"},
+        {"code": "SUSHI", "name": "SushiSwap (DeFi Protokolü)"},
+        {"code": "COMP", "name": "Compound (Borç Verme Protokolü)"},
+        {"code": "1INCH", "name": "1inch Network (DEX Agregator)"},
+        {"code": "BAL", "name": "Balancer (Otomatik Portföy Havuzu)"},
+        {"code": "CVX", "name": "Convex Finance (DeFi Getiri Optimizasyonu)"},
+        {"code": "AEVO", "name": "Aevo (Opsiyon ve Türev DEX)"},
+        {"code": "SHIB", "name": "Shiba Inu"},
+        {"code": "PEPE", "name": "Pepe"},
+        {"code": "WIF", "name": "dogwifhat (Solana Meme)"},
+        {"code": "BONK", "name": "Bonk (Solana Topluluk)"},
+        {"code": "FLOKI", "name": "Floki"},
+        {"code": "BRETT", "name": "Brett (Base Meme)"},
+        {"code": "POPCAT", "name": "Popcat (Solana Meme)"},
+        {"code": "BOME", "name": "BOOK OF MEME"},
+        {"code": "MEW", "name": "cat in a dogs world"},
+        {"code": "MEME", "name": "Memecoin"},
+        {"code": "NOT", "name": "Notcoin (Telegram Ekosistemi)"},
+        {"code": "DOGS", "name": "Dogs (Telegram Topluluk Tokenı)"},
+        {"code": "FIL", "name": "Filecoin (Merkeziyetsiz Depolama)"},
+        {"code": "AR", "name": "Arweave (Kalıcı Veri Depolama)"},
+        {"code": "PYTH", "name": "Pyth Network (Gerçek Zamanlı Piyasa Kahini)"},
+        {"code": "HNT", "name": "Helium (Merkeziyetsiz Kablosuz Ağ)"},
+        {"code": "THETA", "name": "Theta Network (Video Dağıtım Ağı)"},
+        {"code": "JASMY", "name": "JasmyCoin (IoT Veri Güvenliği)"},
+        {"code": "ANKR", "name": "Ankr (Web3 Altyapı & Node)"},
+        {"code": "ONDO", "name": "Ondo Finance (Tokenize Hazine Bonoları & RWA)"},
+        {"code": "OM", "name": "MANTRA (RWA Blokzincir Ağı)"},
+        {"code": "CFG", "name": "Centrifuge (RWA Finansman Protokolü)"},
+        {"code": "GALA", "name": "Gala Games (Web3 Oyun Ekosistemi)"},
+        {"code": "AXS", "name": "Axie Infinity (Oyna-Kazan Oyunu)"},
+        {"code": "SAND", "name": "The Sandbox (Metaverse Sanal Dünya)"},
+        {"code": "MANA", "name": "Decentraland (Sanal Gayrimenkul & 3D Dünya)"},
+        {"code": "APE", "name": "ApeCoin (Bored Ape Ekosistemi)"},
+        {"code": "BEAM", "name": "Beam Gaming (Web3 Oyun Ağı)"},
+        {"code": "ENJ", "name": "Enjin Coin (NFT & Oyun Ekosistemi)"},
+        {"code": "PIXEL", "name": "Pixels (Web3 Sosyal Oyun)"},
+        {"code": "PRIME", "name": "Echelon Prime (Web3 Bilim Kurgu Kart Oyunu)"},
+        {"code": "LTC", "name": "Litecoin (Dijital Gümüş)"},
+        {"code": "BCH", "name": "Bitcoin Cash (P2P Nakit)"},
+        {"code": "ETC", "name": "Ethereum Classic"},
+        {"code": "XMR", "name": "Monero (Gizlilik Odaklı İşlemler)"},
+        {"code": "ZEC", "name": "Zcash (Sıfır Bilgi İspatlı Gizlilik)"},
+        {"code": "DASH", "name": "Dash (Hızlı Dijital Nakit)"},
+        {"code": "VET", "name": "VeChain (Tedarik Zinciri Takibi)"},
+        {"code": "CHZ", "name": "Chiliz (Spor & Taraftar Token Platformu)"},
+        {"code": "USDT", "name": "Tether USD (1$ Sabit Kripto)"},
+        {"code": "USDC", "name": "USD Coin (Circle Destekli 1$)"},
+        {"code": "DAI", "name": "Dai (Merkeziyetsiz Teminatlı Dolar)"},
+        {"code": "FDUSD", "name": "First Digital USD (Nakit Destekli Dolar)"}
+    ],
     "Emtia": [
         {"code": "SPOT_ALTIN", "name": "Spot Altın (Gram ₺)"},
         {"code": "SPOT_ONS", "name": "Spot Ons Altın ($ / Ounce)"},
@@ -4366,7 +4417,7 @@ def get_price(market: str, symbol: str):
     if m in ["FON", "TEFAS", "TR FON"]:
         return get_fon_price(s)
 
-    # Kripto (Binance API)
+    # Kripto (Binance API + Yahoo Finance Fallback)
     elif m in ["KRIPTO", "CRYPTO"]:
         try:
             clean_sym = s.replace("USDT", "").replace("USD", "")
@@ -4375,6 +4426,19 @@ def get_price(market: str, symbol: str):
                 price = float(r.json()["price"])
         except Exception:
             pass
+        if not price:
+            try:
+                clean_sym = s.replace("USDT", "").replace("USD", "")
+                r = requests.get(
+                    f"https://query1.finance.yahoo.com/v8/finance/chart/{clean_sym}-USD?interval=1d&range=1d",
+                    headers=NEWS_HEADERS,
+                    timeout=5
+                )
+                if r.status_code == 200:
+                    meta = r.json()["chart"]["result"][0]["meta"]
+                    price = float(meta.get("regularMarketPrice", 0))
+            except Exception:
+                pass
 
     # Döviz (Yahoo Finance)
     elif m in ["DÖVIZ", "DOVIZ", "FOREX"]:
